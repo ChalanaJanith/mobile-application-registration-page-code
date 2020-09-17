@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "993148417584",
+    "firebase_url": "https://tour-assist-sl.firebaseio.com",
+    "project_id": "tour-assist-sl",
+    "storage_bucket": "tour-assist-sl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993148417584:android:5e75af55af6f75a7385ff5",
+        "android_client_info": {
+          "package_name": "com.example.tourassistsrilankapro2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "993148417584-unj652130hbkqa2aqdogu5eoekrjthph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlqpvSA_cp7iAzEFzA2bE0suSLBt2AWRI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "993148417584-unj652130hbkqa2aqdogu5eoekrjthph.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

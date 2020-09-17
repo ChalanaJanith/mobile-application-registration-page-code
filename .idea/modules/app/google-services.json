@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "688648514217",
+    "firebase_url": "https://tour-assist-srilanka-pro2.firebaseio.com",
+    "project_id": "tour-assist-srilanka-pro2",
+    "storage_bucket": "tour-assist-srilanka-pro2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:688648514217:android:f92b11d566ce63f800d7b8",
+        "android_client_info": {
+          "package_name": "com.example.tourassistsrilankapro2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "688648514217-iq3s11l5fccv9k6s6s4392mm6q8u396d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tourassistsrilankapro2",
+            "certificate_hash": "4bf68dd82f390d5675f90cb2cf681c72e37d833a"
+          }
+        },
+        {
+          "client_id": "688648514217-ddv4gkak7u2nvomavj0dvef9bt6gvu6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_HteoEN5wUbrPvGHr-IzdjZ4jQr9zA3Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "688648514217-ddv4gkak7u2nvomavj0dvef9bt6gvu6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
