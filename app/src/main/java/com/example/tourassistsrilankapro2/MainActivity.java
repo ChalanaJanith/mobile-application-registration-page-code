@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,16 +28,26 @@ public class MainActivity extends AppCompatActivity {
     public  EditText cusphone;
     public  EditText cusaddress;
     public  EditText cuspsw1;
-    public  EditText cuspsw2;
-
-    public Button regsignBtn;
+    TextView icon;
     private ProgressDialog dialog;
 
-    FirebaseAuth auth;
+
+    TextView AlreadyAccount;
+
+    public Button regsignBtn;
+   // private ProgressDialog dialog;
+
+    private FirebaseAuth auth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference dbref = database.getReference().child("Users");
+    private DatabaseReference collection = database.getReference().child("users");
     private String userId;
-    regClass registration;
+
+    String nowhitespace ="\\A\\w{4,20}\\z";
+    String emailpattern = "[a-zA-z0-9._=]+@[a-z]+\\.+[a-z]+";
+
+    String passwordval = "^.{4,8}$";
+
+
 
     private void clearControls(){
         cusname.setText("");
@@ -44,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         cusphone.setText("");
         cusaddress.setText("");
         cuspsw1.setText("");
-        cuspsw2.setText("");
+
     }
 
 
@@ -54,107 +65,130 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dialog = new ProgressDialog(this);
+        auth = FirebaseAuth.getInstance();
 
+        AlreadyAccount=findViewById(R.id.alreadyAcc);
+        AlreadyAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this,loginactivity.class);
+                startActivity(intent);
+            }
+        });
+        registerUser();
+
+
+    }
+    private  void registerUser(){
 
         cusname = (EditText)findViewById(R.id.Reg_yourname);
         cusemail = (EditText)findViewById(R.id.Reg_email);
         cusphone = (EditText)findViewById(R.id.Reg_phonenumber);
         cusaddress = (EditText)findViewById(R.id.Reg_address);
         cuspsw1 = (EditText)findViewById(R.id.Reg_password);
-        cuspsw2 = (EditText)findViewById(R.id.Reg_password2);
+       // AlreadyAccount = findViewById(R.id.alreadyAcc);
+        icon = findViewById(R.id.loginicon);
+
+
 
         regsignBtn = (Button)findViewById(R.id.Reg_signup);
 
-        registration = new regClass();
 
 
         regsignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //get all the values
+
                 final String username = cusname.getText().toString().trim();
                 final String useremail = cusemail.getText().toString().trim();
                 final String userphone = cusphone.getText().toString().trim();
                 final String useradd = cusaddress.getText().toString().trim();
                 final String userpwd1 = cuspsw1.getText().toString().trim();
-                String userpwd2 = cuspsw2.getText().toString().trim();
-               dbref = FirebaseDatabase.getInstance().getReference().child("Users") ;
 
 
-                // validation
 
+                if (TextUtils.isEmpty(username)){
+                    cusname.setError("Name is Required");
+                    cusname.requestFocus();
+                    return;
+                }
+                if(username.length()>=20){
+                    cusname.setError("Name is too long");
+                    cusname.requestFocus();
+                    return;
+                }
+                if(!username.matches(nowhitespace)){
+                    cusname.setError("white spaces are not allowed!");
+                    cusname.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(useremail)){
+                    cusemail.setError("Email is Required");
+                    cusemail.requestFocus();
+                    return;
+                }
+                if(useremail.length()>=50){
+                    cusemail.setError("Name is too long");
+                    cusemail.requestFocus();
+                    return;
 
-                    if (TextUtils.isEmpty(username)) {
-                        cusname.setError("Name is Required");
-                        cusname.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(useremail)) {
-                        cusemail.setError("Email is Required");
-                        cusemail.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(userphone)) {
-                        cusphone.setError("Phone Number is Required");
-                        cusphone.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(useradd)) {
-                        cusaddress.setError("Address is Required");
-                        cusaddress.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(userpwd1)) {
-                        cuspsw1.setError("Password is Required");
-                        cuspsw1.requestFocus();
-                        return;
-                    }
-                    if (TextUtils.isEmpty(userpwd2)) {
-                        cuspsw2.setError("Password is Required");
-                        cuspsw2.requestFocus();
-                        return;
-                    }
-                    if (!TextUtils.equals(userpwd1, userpwd2)) {
-                        cuspsw2.setError("Passwords Not Match");
-                        cuspsw2.requestFocus();
-                        return;
-                    }
-                    if (username.isEmpty() && useremail.isEmpty() && useradd.isEmpty() && userphone.isEmpty() && userpwd1.isEmpty() && userpwd2.isEmpty()) {
+                }
+                if(!useremail.matches(emailpattern)){
+                    cusemail.setError("invalid email pattern");
+                    cusemail.requestFocus();
+                    return;
 
-                        Toast.makeText(MainActivity.this, "Fields are Empty!", Toast.LENGTH_LONG).show();
-
-                    }
-                dialog.setMessage("Sending Data...");
+                }
+                if (TextUtils.isEmpty(userphone)) {
+                    cusphone.setError("Phone Number is Required");
+                    cusphone.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(useradd)) {
+                    cusaddress.setError("Address is Required");
+                    cusaddress.requestFocus();
+                    return;
+                }
+                if (TextUtils.isEmpty(userpwd1)) {
+                    cuspsw1.setError("Password is Required");
+                    cuspsw1.requestFocus();
+                    return;
+                }
+                if(!userpwd1.matches(passwordval)){
+                    Toast.makeText(MainActivity.this, "Password is too weak", Toast.LENGTH_LONG).show();
+                }
+                dialog.setMessage("Sending data...");
                 dialog.show();
 
                 auth.createUserWithEmailAndPassword(useremail,userpwd1).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if(task.isSuccessful()){
                             dialog.dismiss();
                             Toast.makeText(getApplicationContext(),"Registration Success",Toast.LENGTH_LONG).show();
                             userId = auth.getCurrentUser().getUid();
-                            regClass regClass = new regClass(username,useremail,useradd,userphone,userpwd1);
-                            dbref.child(userId).setValue(regClass);
-                        }else{
+                            regClass reg = new regClass(username,useremail,userphone,useradd,userpwd1);
+                            collection.child(userId).setValue(reg);
+                        }
+                        else{
                             dialog.dismiss();
                             Toast.makeText(getApplicationContext(),"Registration Failed", Toast.LENGTH_SHORT).show();
                         }
+
                     }
                 });
 
+
             }
         });
+
+
+
     }
 
-
-
-
-
-    public void gotoNext(View view) {
-
-          //  Intent dsp = new Intent(MainActivity.this,loginpage.class);
-           // startActivity(dsp);
-
-    }
 }
