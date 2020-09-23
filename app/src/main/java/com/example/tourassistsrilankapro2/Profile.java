@@ -18,16 +18,18 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Profile extends AppCompatActivity {
 
-    TextView proName,proEmail,proPhone,proAddress;
+    private TextView proName,proEmail,proPhone,proAddress;
   //  TextView proEditBtn;
     private String email, password;
 
     String userId;
 
     TextView txt;
-    FirebaseAuth firebaseAuth;
-    // here
-    FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth auth;
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private DatabaseReference reference = database.getReference().child("users");
+
+    // updated by RAVB
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +44,10 @@ public class Profile extends AppCompatActivity {
         proPhone = findViewById(R.id.USERPHONE);
         proAddress = findViewById(R.id.USERADDRESS);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseDatabase = FirebaseDatabase.getInstance();
+        auth = FirebaseAuth.getInstance();
+        DatabaseReference userRef = reference.child(auth.getCurrentUser().getUid());
 
-        DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 regClass RegClass = snapshot.getValue(regClass.class);
@@ -63,17 +63,5 @@ public class Profile extends AppCompatActivity {
             }
 
             });
-
-
-
-
-       /* proEditBtn.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-
-
-            }
-        });*/
-
     }
 }

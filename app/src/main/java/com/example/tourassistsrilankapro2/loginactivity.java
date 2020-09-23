@@ -109,9 +109,6 @@ public class loginactivity extends AppCompatActivity {
                              Intent intent = new Intent(loginactivity.this,Profile.class);
                              intent.putExtra("id",LoginEmail);
                              startActivity(intent);
-
-
-
                          }else{
                              progress.dismiss();
                              Toast.makeText(getApplicationContext(),"login failed",Toast.LENGTH_LONG).show();
